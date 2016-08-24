@@ -194,8 +194,15 @@ type withMessage struct {
 	msg   string
 }
 
-func (w *withMessage) Error() string { return w.msg + ": " + w.cause.Error() }
-func (w *withMessage) Cause() error  { return w.cause }
+func (w *withMessage) Error() string {
+	sep := ": "
+	if w.msg == "" {
+		sep = ""
+	}
+	return w.msg + sep + w.cause.Error()
+}
+
+func (w *withMessage) Cause() error { return w.cause }
 
 func (w *withMessage) Format(s fmt.State, verb rune) {
 	switch verb {
